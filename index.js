@@ -1,22 +1,15 @@
 const express = require('express');
 const connectDB = require('./src/config 9.22.56 PM/config/database');
+const authRouter = require('./src/config 9.22.56 PM/routes/authRouter');
+const profileRouter = require('./src/config 9.22.56 PM/routes/profile');
+const cookieParser = require("cookie-parser");
 const app = express();
 
-const User = require('./src/config 9.22.56 PM/models/user');
-
+app.use(cookieParser());
 app.use(express.json());
+app.use('/',authRouter);
+app.use('/',profileRouter);
 
-app.post('/user', async (req,res) => {
-  console.log(req.body)
-  const user = new User(req.body);
-  try{
-    await user.save();
-    res.send('Record Inserted!!')
-  }catch(err){
-    res.send('Error in Insert Record!!')
-  }
-    
-})
 
 connectDB().then(() => {
     console.log('Database Connected!') 
